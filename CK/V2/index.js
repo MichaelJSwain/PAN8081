@@ -4,6 +4,7 @@ const CX1698 = {
         css.innerHTML = `
             .sticky-btn-container {
                 display: none;
+                grid-template-columns: 1fr 1fr;
                 position: fixed;
                 bottom: 0;
                 width: 100vw;
@@ -29,6 +30,9 @@ const CX1698 = {
                 color: white;
                 cursor: pointer;
             }
+            .sticky-btn-text-container {
+                overflow: hidden
+            }
             .sticky-btn-img-container {
                 height: 56px;
                 margin-right: 16px;
@@ -38,6 +42,12 @@ const CX1698 = {
             }
             .sticky-btn-left-col {
                 display: flex;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            .sticky-btn-right-col {
+                display: flex;
+                justify-content: flex-end;
             }
             .sticky-btn-container p,
             .sticky-btn-container span {
@@ -57,7 +67,7 @@ const CX1698 = {
                     height: 80px;
                     padding: 12px 40px;
                     flex-direction: row;
-                    display: flex;
+                    display: grid;
                 }
                 .sticky-btn-container button {
                     width: 390px
@@ -213,17 +223,15 @@ const CX1698 = {
         const btn = document.createElement('div');
         btn.setAttribute('class', 'sticky-btn-container');
         btn.innerHTML = `
-            <div>
-                <div class="sticky-btn-left-col">
-                    <div class="sticky-btn-img-container">
-                        <img class="sticky-btn-img" src="${productImage}"/>
-                    </div>
-                    <div class="sticky-btn-text-container">
-                        <p class="sticky-btn-name">${productName}</p>
-                        <div class="sticky-btn-price">
-                            <span>${productPrice}</span>
-                            <span></span>
-                        </div>
+            <div class="sticky-btn-left-col">
+                <div class="sticky-btn-img-container">
+                    <img class="sticky-btn-img" src="${productImage}"/>
+                </div>
+                <div class="sticky-btn-text-container">
+                    <p class="sticky-btn-name">${productName}</p>
+                    <div class="sticky-btn-price">
+                        <span>${productPrice}</span>
+                        <span></span>
                     </div>
                 </div>
             </div>
