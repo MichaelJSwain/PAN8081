@@ -241,7 +241,7 @@ const CX1698 = {
     },
     handleButtonAnimation: () => {
         // document.querySelector('[data-testid="stickyAddToBagButton-addToBag-pvh-button"]').style.width = "60px";
-        document.querySelector('[data-testid*=" v"]').style.animation =  "transitionAddToBagButton 1s forwards";
+        document.querySelector('[data-testid*="stickyAddToBagButton"]').style.animation =  "transitionAddToBagButton 1s forwards";
         document.querySelector('.mobile-sticky-btn-container').style.animation = "transitionProductDetails 1s forwards";
         document.querySelector('.mobile-sticky-btn-icon').style.animation = "transitionButtonIcon 1s forwards";
         document.querySelector('[data-testid*="stickyAddToBagButton"] [class*="Button_buttonContent"]').style.animation = "transitionOut 1s forwards";
