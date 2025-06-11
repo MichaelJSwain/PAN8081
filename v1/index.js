@@ -52,6 +52,9 @@ const CX1698 = {
             .visible {
                 visibility: visible;
             }
+            .sticky-btn-container button {
+                text-transform: uppercase;
+            }
 
             @media only screen and (min-width: 768px) {
                 .sticky-btn-container { 
@@ -100,6 +103,18 @@ const CX1698 = {
         }
         .mobile-sticky-btn-container p {
             margin: 0 0 4px 0;
+        }
+        .mobile-sticky-btn-text-container {
+            white-space: nowrap;
+        }
+        .mobile-sticky-btn-text-container,
+        .mobile-sticky-btn-name,
+        .mobile-sticky-btn-price {
+            overflow: hidden;
+        }
+        .mobile-sticky-btn-name,
+        .mobile-sticky-btn-price {
+            text-overflow: ellipsis;
         }
         `;
         document.head.appendChild(css);
@@ -155,8 +170,8 @@ const CX1698 = {
                 <img class="mobile-sticky-btn-img" src="${productImage}"/>
             </div>
             <div class="mobile-sticky-btn-text-container">
-                <p>${productName}</p>
-                <div>
+                <p class="mobile-sticky-btn-name">${productName}</p>
+                <div class="mobile-sticky-btn-price">
                     <span>${productPrice}</span>
                     <span></span>
                 </div>
@@ -165,15 +180,19 @@ const CX1698 = {
 
         return btn;
     },
+    setButtonText: () => {
+        document.querySelector('.sticky-btn-container button').textContent = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+    },
     displayDesktopStickyA2BOnScrollDown: () => {
         let lastScrollTop = 0;
         let isShowingButton = false;
 
         window.addEventListener("scroll", () => { 
             let st = window.pageYOffset || document.documentElement.scrollTop;
-            let staticButtonPos = document.querySelector('[data-testid="pdpActionButton-addToBag-pvh-button"]').getBoundingClientRect().top;
+            let staticButtonPos = document.querySelector('[data-testid*="pdpActionButton"]').getBoundingClientRect().top;
 
             if (st > lastScrollTop && staticButtonPos < 0 && !isShowingButton) {
+                CX1698.setButtonText();
                 console.log("show button");
                 document.querySelector('.sticky-btn-container').classList.add('visible');
                 document.querySelector('header').style.opacity = 0;
