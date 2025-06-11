@@ -24,6 +24,7 @@ const CX1698 = {
                 font-family: gill sans;
                 font-size: 12px;
                 padding: 19px 31px;
+                border: none;
                 background: black;
                 color: white;
                 letter-spacing: 1.2px;
@@ -42,7 +43,6 @@ const CX1698 = {
             .sticky-btn-container p,
             .sticky-btn-container span {
                 color: #000;
-                font-size: 16px;
                 line-height: 24px;
                 font-family: Gill Sans;
             }
@@ -97,7 +97,6 @@ const CX1698 = {
         .mobile-sticky-btn-container p,
         .mobile-sticky-btn-container span {
             color: #000;
-            font-size: 16px;
             line-height: 24px;
             font-family: Gill Sans;
         }
@@ -108,13 +107,19 @@ const CX1698 = {
             white-space: nowrap;
         }
         .mobile-sticky-btn-text-container,
-        .mobile-sticky-btn-name,
-        .mobile-sticky-btn-price {
+        .sticky-btn-name,
+        .sticky-btn-price {
             overflow: hidden;
         }
-        .mobile-sticky-btn-name,
-        .mobile-sticky-btn-price {
+        .sticky-btn-name,
+        .sticky-btn-price {
             text-overflow: ellipsis;
+        }
+        .sticky-btn-name {
+            font-size: 16px;
+        }
+        .sticky-btn-price {
+            font-size: 14px;
         }
         `;
         document.head.appendChild(css);
@@ -141,8 +146,8 @@ const CX1698 = {
                         <img class="sticky-btn-img" src="${productImage}"/>
                     </div>
                     <div class="sticky-btn-text-container">
-                        <p>${productName}</p>
-                        <div>
+                        <p class="sticky-btn-name">${productName}</p>
+                        <div class="sticky-btn-price">
                             <span>${productPrice}</span>
                             <span></span>
                         </div>
@@ -170,8 +175,8 @@ const CX1698 = {
                 <img class="mobile-sticky-btn-img" src="${productImage}"/>
             </div>
             <div class="mobile-sticky-btn-text-container">
-                <p class="mobile-sticky-btn-name">${productName}</p>
-                <div class="mobile-sticky-btn-price">
+                <p class="sticky-btn-name">${productName}</p>
+                <div class="sticky-btn-price">
                     <span>${productPrice}</span>
                     <span></span>
                 </div>

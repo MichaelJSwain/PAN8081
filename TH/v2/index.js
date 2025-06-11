@@ -29,6 +29,10 @@ const CX1698 = {
                 letter-spacing: 1.2px;
                 cursor: pointer;
             }
+            .sticky-btn-text-container {    
+                width: calc(100vw - (40px + 41px + 16px + 390px + 40px));
+                white-space: nowrap;
+            }
             .sticky-btn-img-container {
                 height: 56px;
                 margin-right: 16px;
@@ -42,7 +46,6 @@ const CX1698 = {
             .sticky-btn-container p,
             .sticky-btn-container span {
                 color: #000;
-                font-size: 16px;
                 line-height: 24px;
                 font-family: Gill Sans;
             }
@@ -67,6 +70,18 @@ const CX1698 = {
                     width: 390px
                 }
             }
+
+        .sticky-btn-name,
+        .sticky-btn-price {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .sticky-btn-name {
+            font-size: 16px;
+        }
+        .sticky-btn-price {
+            font-size: 14px;
+        }
 
         @media only screen and (max-width: 767px) {
                   [data-testid="stickyAddToBag"] {
@@ -98,11 +113,7 @@ const CX1698 = {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .mobile-sticky-btn-name,
-        .mobile-sticky-btn-price {
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
+  
         .mobile-sticky-btn-img-container {
             height: 100%;
             margin-right: 16px;
@@ -116,7 +127,6 @@ const CX1698 = {
         .mobile-sticky-btn-container p,
         .mobile-sticky-btn-container span {
             color: #000;
-            font-size: 16px;
             line-height: 24px;
             font-family: Gill Sans;
         }
@@ -198,8 +208,8 @@ const CX1698 = {
                         <img class="sticky-btn-img" src="${productImage}"/>
                     </div>
                     <div class="sticky-btn-text-container">
-                        <p>${productName}</p>
-                        <div>
+                        <p class="sticky-btn-name">${productName}</p>
+                        <div class="sticky-btn-price">
                             <span>${productPrice}</span>
                             <span></span>
                         </div>
@@ -228,8 +238,8 @@ const CX1698 = {
                     <img class="mobile-sticky-btn-img" src="${productImage}"/>
                 </div>
                 <div class="mobile-sticky-btn-text-container">
-                    <p class="mobile-sticky-btn-name">${productName}</p>
-                    <div class="mobile-sticky-btn-price">
+                    <p class="sticky-btn-name">${productName}</p>
+                    <div class="sticky-btn-price">
                         <span>${productPrice}</span>
                         <span></span>
                     </div>
