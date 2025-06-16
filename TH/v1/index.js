@@ -52,7 +52,6 @@ const CX1698 = {
             }
             .sticky-btn-container p,
             .sticky-btn-container span {
-                color: #000;
                 line-height: 24px;
                 font-family: Gill Sans;
             }
@@ -106,7 +105,6 @@ const CX1698 = {
         }
         .mobile-sticky-btn-container p,
         .mobile-sticky-btn-container span {
-            color: #000;
             line-height: 24px;
             font-family: Gill Sans;
         }
@@ -131,15 +129,24 @@ const CX1698 = {
         .sticky-btn-price {
             font-size: 14px;
         }
+        .was-price {
+            text-decoration: line-through;
+        }
+        .new-price {
+            color: #cc0c2f;
+        }
         `;
         document.head.appendChild(css);
     },
     getProductImageAndPrice: () => {
         // get first image from carousel
         const productImage = document.querySelector('[data-testid="CarouselItemWrapper"] [data-testid="prod-mainImage_img"]').getAttribute('src');
-        const productPrice = document.querySelector('[data-testid="ProductHeaderPrice-PriceText"]').textContent;
+        const productPrice = {
+                                was: document.querySelector('[data-testid="ProductHeaderPrice-WasPriceText"]') ? document.querySelector('[data-testid="ProductHeaderPrice-WasPriceText"]').textContent : null,
+                                current: document.querySelector('[data-testid="ProductHeaderPrice-PriceText"]').textContent
+                            };
         const productName = document.querySelector('[data-testid="ProductHeader-ProductName-typography-h1"]').textContent;
-        console.log("product img = ", productImage);
+        
         return {
             productImage,
             productPrice,
@@ -157,8 +164,8 @@ const CX1698 = {
                 <div class="sticky-btn-text-container">
                     <p class="sticky-btn-name">${productName}</p>
                     <div class="sticky-btn-price">
-                        <span>${productPrice}</span>
-                        <span></span>
+                        ${productPrice.was ? `<span class="was-price">${productPrice.was}</span>` : ""}
+                        <span class=${productPrice.was ? "new-price" : "current-price"}>${productPrice.current}</span>
                     </div>
                 </div>
             </div>
@@ -184,9 +191,9 @@ const CX1698 = {
             </div>
             <div class="mobile-sticky-btn-text-container">
                 <p class="sticky-btn-name">${productName}</p>
-                <div class="sticky-btn-price">
-                    <span>${productPrice}</span>
-                    <span></span>
+                 <div class="sticky-btn-price">
+                    ${productPrice.was ? `<span class="was-price">${productPrice.was}</span>` : ""}
+                    <span class=${productPrice.was ? "new-price" : "current-price"}>${productPrice.current}</span>
                 </div>
             </div>
         `;
