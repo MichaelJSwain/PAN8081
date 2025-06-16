@@ -6,7 +6,7 @@ const CX1698 = {
                 display: none;
                 grid-template-columns: 1fr 1fr;
                 position: fixed;
-                top: 0;
+                top: -100px;
                 width: 100vw;
                 height: 148px;
                 padding: 12px 12px;
@@ -14,7 +14,7 @@ const CX1698 = {
                 justify-content: center;
                 background: white;
                 z-index: 100;
-                visibility: hidden;
+                transition: 0.7s top ease;
                 justify-content: space-between;
                 box-shadow: 0px 0px 30px 0px rgba(109, 109, 109, 0.20);
                 border-bottom: 1px solid var(--Palette-Gray-50, #F7F8F9);
@@ -60,7 +60,7 @@ const CX1698 = {
                 margin: 0 0 4px 0;
             }
             .visible {
-                visibility: visible;
+                top: 0;
             }
 
             @media only screen and (min-width: 768px) {
