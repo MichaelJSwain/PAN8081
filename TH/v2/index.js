@@ -286,11 +286,16 @@ const CX1698 = {
     displayDesktopStickyA2BOnScrollDown: () => {
         let lastScrollTop = 0;
         let isShowingButton = false;
+        let mbAnimationCountdown = 40;
         
-
         window.addEventListener("scroll", () => {
 
-            if (!CX1698.hasShownMobileButtonAnimation && document.querySelector('[data-testid*="stickyAddToBagButton"]')) {
+            if (mbAnimationCountdown > 0) {
+                console.log(mbAnimationCountdown)
+                mbAnimationCountdown--;
+            }
+
+            if (!CX1698.hasShownMobileButtonAnimation && document.querySelector('[data-testid*="stickyAddToBagButton"]') && mbAnimationCountdown <= 0) {
                 CX1698.handleButtonAnimation();
             } else if (CX1698.hasShownMobileButtonAnimation && document.querySelector('[data-testid="stickyAddToBag"]')) {
                 document.querySelector('[data-testid*="stickyAddToBagButton"]').style.width = "52px";
