@@ -298,13 +298,37 @@ const CX1698 = {
         iconContainer.innerHTML = icon;
         return iconContainer;
     },
+    throttleScroll: (cb, delay = 100) => {
+        let shouldWait = false;
+        let waitingArgs;
+
+        const timeoutFunc = () => {
+            if (waitingArgs == null) {
+                shouldWait = false;
+            } else {
+                cb(...waitingArgs);
+                waitingArgs = null;
+                setTimeout(timeoutFunc, delay);
+            }
+        }
+
+        return (...args) => {
+            if (shouldWait) {
+                waitingArgs = args;
+                return
+            }
+            cb(...args)
+            shouldWait = true;
+            setTimeout(timeoutFunc, delay);
+        }
+    },
     displayDesktopStickyA2BOnScrollDown: () => {
         let lastScrollTop = 0;
         let isShowingButton = false;
         let mbAnimationCountdown = 40;
 
-        window.addEventListener("scroll", () => {
-            
+        window.addEventListener("scroll", CX1698.throttleScroll(() => {
+            console.log("handling scroll");
             if (mbAnimationCountdown > 0) {
                 console.log(mbAnimationCountdown)
                 mbAnimationCountdown--;
@@ -333,7 +357,7 @@ const CX1698 = {
                 document.querySelector('header').style.opacity = 1;
             } // else was horizontal scroll
             lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-        }, false);
+        }), false);
     },
     handleButtonTextChanges: (staticButton) => {
         const config = { attributes: true, childList: true, subtree: true, characterData: true };
