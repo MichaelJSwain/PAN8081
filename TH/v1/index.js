@@ -63,6 +63,20 @@ const CX1698 = {
             }
             .sticky-btn-container button {
                 text-transform: uppercase;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .sticky-btn-container .sticky-btn-icon {
+                display: flex;
+                height: 100%;
+            }
+            .sticky-btn-container button.itemAdded {
+                background: #0e845a;
+            }
+            .sticky-btn-container .sticky-btn-icon-path {
+                fill: #fff;
             }
 
             @media only screen and (min-width: 768px) {
@@ -138,6 +152,9 @@ const CX1698 = {
         `;
         document.head.appendChild(css);
     },
+    icons: {
+        checkmark: `<svg class="Icon_Icon__qPZ8O Icon_regular__MbCqv" data-testid="icon-utility-check-small-svg" width="0.9285714285714286em" height="1em" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="sticky-btn-icon-path" d="M12.25 3.00391L11.9492 3.30469L4.73047 10.7969L4.42969 11.125L4.10156 10.7969L0.300781 6.83203L0 6.53125L0.628906 5.90234L0.929688 6.23047L4.42969 9.86719L11.3203 2.70312L11.6211 2.375L12.25 3.00391Z" fill="#1B1D1F"></path></svg>`
+    },
     getProductImageAndPrice: () => {
         // get first image from carousel
         const productImage = document.querySelector('[data-testid="CarouselItemWrapper"] [data-testid="prod-mainImage_img"]').getAttribute('src');
@@ -170,7 +187,10 @@ const CX1698 = {
                 </div>
             </div>
             <div class="sticky-btn-right-col">
-                <button>ADD TO BAG</button>
+                <button>
+                    <span class="sticky-btn-icon"></span>
+                    <span class="sticky-btn-text"></span>
+                </button>
             </div> 
         `;
         btn.querySelector('button').addEventListener('click', () => {
@@ -201,7 +221,16 @@ const CX1698 = {
         return btn;
     },
     setButtonText: () => {
-        document.querySelector('.sticky-btn-container button').textContent = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+
+        if (buttonText === 'Item Added') {
+            document.querySelector('.sticky-btn-container button').classList.add('itemAdded');
+            document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = CX1698.icons.checkmark;
+        } else {
+            document.querySelector('.sticky-btn-container button').classList.remove('itemAdded');
+            document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
+        }
+        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText;
     },
     throttleScroll: (cb, delay = 100) => {
         let shouldWait = false;
@@ -257,7 +286,7 @@ const CX1698 = {
         const callback = (mutationList, observer) => {
             for (const mutation of mutationList) {
             if (mutation.type === "characterData" || mutation.type === "attributes") {
-                console.log("MUTATION!")
+                console.log("MUTATION!", mutation)
                 // update button text ...
                 CX1698.setButtonText();
             }

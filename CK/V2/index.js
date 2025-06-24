@@ -60,6 +60,24 @@ const CX1698 = {
             .visible {
                 bottom: 0;
             }
+            .sticky-btn-container button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 16px 24px;
+            }
+            .sticky-btn-container .sticky-btn-icon {
+                display: flex;
+                height: 100%;
+            }
+            .sticky-btn-container button.itemAdded {
+                background: #41850a;
+                border: none;
+            }
+            .sticky-btn-container .sticky-btn-icon-path {
+                fill: #fff;
+            }
 
             @media only screen and (min-width: 768px) {
                 .sticky-btn-container { 
@@ -208,7 +226,8 @@ const CX1698 = {
 <path d="M1 16L7 10Z"></path>
 </mask>
 <path d="M1 16L0.292893 15.2929L6.29289 9.29289L7 10L7.70711 10.7071L1.70711 16.7071L1 16Z" fill="white" mask="url(#path-6-inside-2_9379_852398)"></path>
-</svg>`
+</svg>`,
+        checkmark: `<svg class="Icon_Icon__qPZ8O Icon_regular__MbCqv" data-testid="icon-utility-check-small-svg" width="1em" height="1em" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="sticky-btn-icon-path" fill-rule="evenodd" clip-rule="evenodd" d="M15.1829 3.12159L6.43212 13.5392L1.64648 8.75354L2.35359 8.04644L6.36796 12.0608L14.4172 2.47839L15.1829 3.12159Z" fill="black"></path></svg>`
     },
     hasShownMobileButtonAnimation: false,
     getProductImageAndPrice: () => {
@@ -243,7 +262,10 @@ const CX1698 = {
                 </div>
             </div>
             <div class="sticky-btn-right-col">
-                <button>ADD TO BAG</button>
+                <button>
+                    <span class="sticky-btn-icon"></span>
+                    <span class="sticky-btn-text"></span>
+                </button>
             </div> 
         `;
         btn.querySelector('button').addEventListener('click', () => {
@@ -284,7 +306,16 @@ const CX1698 = {
         CX1698.hasShownMobileButtonAnimation = true;
     },
     setButtonText: () => {
-        document.querySelector('.sticky-btn-container button').textContent = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+
+        if (buttonText === 'Item Added') {
+            document.querySelector('.sticky-btn-container button').classList.add('itemAdded');
+            document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = CX1698.icons.checkmark;
+        } else {
+            document.querySelector('.sticky-btn-container button').classList.remove('itemAdded');
+            document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
+        }
+        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText;
     },
     setMobileButtonIcon: (iconContainer) => {
         const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
