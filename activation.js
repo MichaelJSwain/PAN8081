@@ -5,6 +5,10 @@ function callbackFn(activate, options) {
         window.__NEXT_DATA__.page;
     }).then(() => {
         if (window.__NEXT_DATA__.page === '/pdp') {
+            if (window.innerWidth < 768) {
+                activate();
+            }
+
             optimizely.utils.waitForElement('[data-testid*="pdpActionButton"]')
             .then(staticButton => {
                 const throttleScroll = (cb, delay = 100) => {
