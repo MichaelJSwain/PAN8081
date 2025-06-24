@@ -226,6 +226,21 @@ const CX1698 = {
             lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
         }, false);
     },
+    handleButtonTextChanges: (staticButton) => {
+        const config = { attributes: true, childList: true, subtree: true, characterData: true };
+
+        const callback = (mutationList, observer) => {
+            for (const mutation of mutationList) {
+            if (mutation.type === "characterData" || mutation.type === "attributes") {
+                console.log("MUTATION!")
+                // update button text ...
+                CX1698.setButtonText();
+            }
+            }
+        };
+        const observer = new MutationObserver(callback);
+        observer.observe(staticButton, config);
+    },
     init: () => {
         CX1698.addCss();
 
@@ -237,6 +252,10 @@ const CX1698 = {
 
         optimizely.utils.observeSelector('[data-testid="stickyAddToBag"]', stickyBtn => {
             stickyBtn.insertBefore(mobileProductDetailsElem, stickyBtn.firstElementChild);
+        });
+
+        optimizely.utils.waitForElement(`[data-testid*="pdpActionButton"]`).then(staticButton => {
+            CX1698.handleButtonTextChanges(staticButton);
         });
     }
 }
