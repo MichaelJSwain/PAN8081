@@ -172,6 +172,12 @@ const CX1698 = {
             display: flex;
             justify-content: end;
         }
+        .has-shown-mobile-btn-animation {
+            opacity: 1;
+        }
+        .has-shown-mobile-btn-animation + [data-testid*="stickyAddToBagButton"] {
+            width: 52px;
+        }
     
         .mobile-sticky-btn-container.has-shown-mobile-btn-animation + button [class*="Button_buttonContent_"] {
             opacity: 0;
@@ -298,30 +304,51 @@ const CX1698 = {
         return btn;
     },
     handleButtonAnimation: () => {
-        // document.querySelector('[data-testid="stickyAddToBagButton-addToBag-pvh-button"]').style.width = "60px";
-        document.querySelector('[data-testid*="stickyAddToBagButton"]').style.animation =  "transitionAddToBagButton 1s forwards";
-        document.querySelector('.mobile-sticky-btn-container').style.animation = "transitionProductDetails 1s forwards";
-        document.querySelector('.mobile-sticky-btn-icon').style.animation = "transitionButtonIcon 1s forwards";
-        document.querySelector('[data-testid*="stickyAddToBagButton"] [class*="Button_buttonContent"]').style.animation = "transitionOut 1s forwards";
-        CX1698.hasShownMobileButtonAnimation = true;
+        setTimeout(() => {
+            document.querySelector('[data-testid*="stickyAddToBagButton"]').style.animation =  "transitionAddToBagButton 1s forwards";
+            document.querySelector('.mobile-sticky-btn-container').style.animation = "transitionProductDetails 1s forwards";
+            document.querySelector('.mobile-sticky-btn-icon').style.animation = "transitionButtonIcon 1s forwards";
+            document.querySelector('[data-testid*="stickyAddToBagButton"] [class*="Button_buttonContent"]').style.animation = "transitionOut 1s forwards";
+            CX1698.hasShownMobileButtonAnimation = true;
+        }, 2000);
+    },
+    checkButtonText: () => {
+        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonTextLowerCase = buttonText.toLowerCase();
+
+        if (buttonTextLowerCase === 'item added' || buttonTextLowerCase === 'item toegevoegd' || buttonTextLowerCase === 'artikel hinzugefügt' || buttonTextLowerCase === 'article ajouté' || buttonTextLowerCase === 'articolo aggiunto' || buttonTextLowerCase === 'artículo añadido' || buttonTextLowerCase === 'dodano produkt') {
+            return {
+                type: "item added",
+                text: buttonText
+            };
+        } else if (buttonTextLowerCase === 'notify me' || buttonTextLowerCase === 'waarschuw mij' || buttonTextLowerCase === 'benachrichtigen sie mich' || buttonTextLowerCase === "m'informer" || buttonTextLowerCase === 'avvisami' || buttonTextLowerCase === 'notifícame' || buttonTextLowerCase === 'powiadom mnie') {
+            return {
+                type: "notify me",
+                text: buttonText
+            };
+        }
+        return {
+            type: "a2b",
+            text: buttonText
+        }
     },
     setButtonText: () => {
-        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonText = CX1698.checkButtonText();
 
-        if (buttonText === 'Item Added') {
+        if (buttonText.type === 'item added') {
             document.querySelector('.sticky-btn-container button').classList.add('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = CX1698.icons.checkmark;
         } else {
             document.querySelector('.sticky-btn-container button').classList.remove('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
         }
-        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText;
+        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText.text;
     },
     setMobileButtonIcon: (iconContainer) => {
         const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
 
         let icon;
-        if (buttonText.includes("Notify me")) {
+        if (buttonText.type === "notify me") {
             icon = CX1698.icons.notifyMe;
         } else {
             icon = CX1698.icons.a2b;
@@ -356,33 +383,17 @@ const CX1698 = {
     displayDesktopStickyA2BOnScrollDown: () => {
         let lastScrollTop = 0;
         let isShowingButton = false;
-        let mbAnimationCountdown = 40;
 
         window.addEventListener("scroll", CX1698.throttleScroll(() => {
-            console.log("handling scroll");
-            if (mbAnimationCountdown > 0) {
-                console.log(mbAnimationCountdown)
-                mbAnimationCountdown--;
-            }
-            
-            if (!CX1698.hasShownMobileButtonAnimation && document.querySelector('[data-testid*="stickyAddToBagButton"]') && mbAnimationCountdown <= 0) {
-                CX1698.handleButtonAnimation();
-            } else if (CX1698.hasShownMobileButtonAnimation && document.querySelector('[data-testid="stickyAddToBag"]')) {
-                document.querySelector('[data-testid*="stickyAddToBagButton"]').style.width = "52px";
-                document.querySelector('.mobile-sticky-btn-container').style.opacity = 1;
-            }
-
             let st = window.pageYOffset || document.documentElement.scrollTop;
             let staticButtonPos = document.querySelector('[data-testid*="pdpActionButton"]').getBoundingClientRect().top;
 
             if (st > lastScrollTop && staticButtonPos < 0 && !isShowingButton) {
                 CX1698.setButtonText();
-                console.log("show button");
                 document.querySelector('.sticky-btn-container').classList.add('visible');
                 document.querySelector('header').style.opacity = 0;
                 isShowingButton = true;
             } else if (st < lastScrollTop && isShowingButton) {
-                console.log("hide button");
                 isShowingButton = false;
                 document.querySelector('.sticky-btn-container').classList.remove('visible');
                 document.querySelector('header').style.opacity = 1;
@@ -395,11 +406,9 @@ const CX1698 = {
 
         const callback = (mutationList, observer) => {
             for (const mutation of mutationList) {
-            if (mutation.type === "characterData" || mutation.type === "attributes") {
-                console.log("MUTATION!")
-                // update button text ...
-                CX1698.setButtonText();
-            }
+                if (mutation.type === "characterData" || mutation.type === "attributes") {
+                    CX1698.setButtonText();
+                }
             }
         };
         const observer = new MutationObserver(callback);
@@ -418,14 +427,16 @@ const CX1698 = {
         iconContainer.setAttribute('class', 'mobile-sticky-btn-icon');
 
         optimizely.utils.observeSelector('[data-testid="stickyAddToBag"] [class*="StickyAddToBag_AddToBagButton_"]', stickyBtn => {
-            if (CX1698.hasShownMobileButtonAnimation) {
-                mobileProductDetailsElem.classList.add('has-shown-mobile-btn-animation');
-            }
-
             stickyBtn.insertBefore(mobileProductDetailsElem, stickyBtn.firstElementChild);
             
             const buttonIcon = CX1698.setMobileButtonIcon(iconContainer);
             stickyBtn.querySelector('button').insertBefore(buttonIcon, stickyBtn.querySelector('button').firstElementChild);
+
+            if (!CX1698.hasShownMobileButtonAnimation) {
+                CX1698.handleButtonAnimation();
+            } else {
+                mobileProductDetailsElem.classList.add('has-shown-mobile-btn-animation');
+            }
         });
 
         optimizely.utils.waitForElement(`[data-testid*="pdpActionButton"]`).then(staticButton => {

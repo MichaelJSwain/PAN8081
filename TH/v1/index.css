@@ -74,6 +74,7 @@
 .sticky-btn-container .sticky-btn-icon-path {
     fill: #fff;
 }
+
 @media only screen and (min-width: 768px) {
     .sticky-btn-container { 
         height: 80px;
@@ -85,60 +86,61 @@
         width: 390px
     }
 }
+
 [data-testid="stickyAddToBag"] {
-flex-direction: column !important;
-box-shadow: 0px 0px 30px 0px rgba(109, 109, 109, 0.20);
-border-top: 1px solid var(--Palette-Gray-200, #E4E4E4);
+    flex-direction: column !important;
+    box-shadow: 0px 0px 30px 0px rgba(109, 109, 109, 0.20);
+    border-top: 1px solid var(--Palette-Gray-200, #E4E4E4);
 }
 .mobile-sticky-btn-container {
-width: 100vw;
-padding: 12px 12px;
-display: flex;
-flex-direction: row;
-justify-content: center;
-background: white;
-z-index: 100;
-justify-content: flex-start;
+    width: 100vw;
+    padding: 12px 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: white;
+    z-index: 100;
+    justify-content: flex-start;
 }
 .mobile-sticky-btn-img-container {
-height: 56px;
-margin-right: 16px;
+    height: 56px;
+    margin-right: 16px;
 }
 .mobile-sticky-btn-container img {
-height: 100%;
+    height: 100%;
 }
 .mobile-sticky-btn-left-col {
-display: flex;
+    display: flex;
 }
 .mobile-sticky-btn-container p,
 .mobile-sticky-btn-container span {
-line-height: 24px;
-font-family: Gill Sans;
+    line-height: 24px;
+    font-family: Gill Sans;
 }
 .mobile-sticky-btn-container p {
-margin: 0 0 4px 0;
+    margin: 0 0 4px 0;
 }
 .mobile-sticky-btn-text-container {
-white-space: nowrap;
+    white-space: nowrap;
 }
 .mobile-sticky-btn-text-container,
 .sticky-btn-name,
 .sticky-btn-price {
-overflow: hidden;
+    overflow: hidden;
 }
 .sticky-btn-name,
 .sticky-btn-price {
-text-overflow: ellipsis;
+    text-overflow: ellipsis;
 }
 .sticky-btn-name {
-font-size: 16px;
+    font-size: 16px;
 }
 .sticky-btn-price {
-font-size: 14px;
+    font-size: 14px;
 }
 .was-price {
-text-decoration: line-through;
+    text-decoration: line-through;
 }
 .new-price {
-color: #cc0c2f;
+    color: #cc0c2f;
 }
