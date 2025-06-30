@@ -322,7 +322,7 @@ const CX1698 = {
         observer.observe(staticButton, config);
     },
     init: () => {
-        CX1698.addCss();
+        // CX1698.addCss();
 
         const {productImage, productPrice, productName} = CX1698.getProductImageAndPrice();
         const desktopStickyA2Bbutton = CX1698.createDesktopStickyA2Bbutton(productImage, productPrice, productName);
