@@ -113,6 +113,14 @@ const CX1698 = {
         }
 
         @media only screen and (max-width: 767px) {
+
+        [data-testid="stickyAddToBag"] [class*="StickyAddToBag_AddToBagButton_"] {
+            overflow: hidden;
+        }
+              [data-testid="button-inLoading-state"] ~ .mobile-sticky-btn-icon  {
+                display: none;
+            }
+
                   [data-testid="stickyAddToBag"] {
             flex-direction: column !important;
             box-shadow: 0px 0px 30px 0px rgba(109, 109, 109, 0.20);
@@ -343,14 +351,17 @@ const CX1698 = {
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
         }
         document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText.text;
+        CX1698.setMobileButtonIcon(document.querySelector('.mobile-sticky-btn-icon'));
     },
     setMobileButtonIcon: (iconContainer) => {
-        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonText = CX1698.checkButtonText();
 
         let icon;
         if (buttonText.type === "notify me") {
             icon = CX1698.icons.notifyMe;
-        } else {
+        } else if (buttonText.type === "item added") {
+            icon = CX1698.icons.checkmark;
+        }  else {
             icon = CX1698.icons.a2b;
         }
         iconContainer.innerHTML = icon;
@@ -430,7 +441,7 @@ const CX1698 = {
             stickyBtn.insertBefore(mobileProductDetailsElem, stickyBtn.firstElementChild);
             
             const buttonIcon = CX1698.setMobileButtonIcon(iconContainer);
-            stickyBtn.querySelector('button').insertBefore(buttonIcon, stickyBtn.querySelector('button').firstElementChild);
+            stickyBtn.querySelector('button').appendChild(buttonIcon);
 
             if (!CX1698.hasShownMobileButtonAnimation) {
                 CX1698.handleButtonAnimation();

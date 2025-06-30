@@ -109,8 +109,22 @@ const CX1698 = {
             color: #cc0c2f;
         }
 
+        .sticky-btn-icon {
+            transform: none !important;
+        }
+
+      
+
         @media only screen and (max-width: 767px) {
-                  [data-testid="stickyAddToBag"] {
+
+        [data-testid="stickyAddToBag"] [class*="StickyAddToBag_AddToBagButton_"] {
+            overflow: hidden;
+        }
+            [data-testid="button-inLoading-state"] ~ .mobile-sticky-btn-icon  {
+                display: none;
+            }
+    
+        [data-testid="stickyAddToBag"] {
             flex-direction: column !important;
             box-shadow: 0px 0px 30px 0px rgba(109, 109, 109, 0.20);
             border-top: 1px solid var(--Palette-Gray-200, #E4E4E4);
@@ -118,7 +132,7 @@ const CX1698 = {
         .mobile-sticky-btn-container {
             width: 100%;
             height: 100%;
-            padding: 12px 12px;
+            padding: 8px 12px;
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -204,17 +218,17 @@ const CX1698 = {
         document.head.appendChild(css);
     },
     icons: {
-        a2b: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+        a2b: `<svg class="sticky-btn-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#FFFFFF;}
 </style>
 <path class="st0" d="M15,15h4l0,0v1l0,0h-4v3.9V20h-1v-0.1V16h-4h0v-1h0h4v-4l0,0h1"/>
 <path class="st0" d="M11,4V3c0-1.7-1.3-3-3-3S5,1.3,5,3v1H1v12h6v-1H2V5h3v3h1V5h4v3h1V5h3v3h1V4H11z M10,4H6V3c0-1.1,0.9-2,2-2  c1.1,0,2,0.9,2,2V4z"/>
 </svg>`,
-        notifyMe: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        notifyMe: `<svg class="sticky-btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3 7L10 11.8125L17 7V5H3V7ZM17 8.1875L10 13L3 8.1875V15H17V8.1875ZM2 4H18V16H2V4Z" fill="white"></path>
 </svg>`,
-        checkmark: `<svg class="Icon_Icon__qPZ8O Icon_regular__MbCqv" data-testid="icon-utility-check-small-svg" width="0.9285714285714286em" height="1em" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="sticky-btn-icon-path" d="M12.25 3.00391L11.9492 3.30469L4.73047 10.7969L4.42969 11.125L4.10156 10.7969L0.300781 6.83203L0 6.53125L0.628906 5.90234L0.929688 6.23047L4.42969 9.86719L11.3203 2.70312L11.6211 2.375L12.25 3.00391Z" fill="#1B1D1F"></path></svg>`
+        checkmark: `<svg class="sticky-btn-icon Icon_Icon__qPZ8O Icon_regular__MbCqv" data-testid="icon-utility-check-small-svg" width="0.9285714285714286em" height="1em" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="sticky-btn-icon-path" d="M12.25 3.00391L11.9492 3.30469L4.73047 10.7969L4.42969 11.125L4.10156 10.7969L0.300781 6.83203L0 6.53125L0.628906 5.90234L0.929688 6.23047L4.42969 9.86719L11.3203 2.70312L11.6211 2.375L12.25 3.00391Z" fill="#1B1D1F"></path></svg>`
     },
     hasShownMobileButtonAnimation: false,
     getProductImageAndPrice: () => {
@@ -323,6 +337,7 @@ const CX1698 = {
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
         }
         document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText.text;
+        CX1698.setMobileButtonIcon(document.querySelector('.mobile-sticky-btn-icon'));
     },
     setMobileButtonIcon: (iconContainer) => {
         const buttonText = CX1698.checkButtonText();
@@ -330,6 +345,8 @@ const CX1698 = {
         let icon;
         if (buttonText.type === "notify me") {
             icon = CX1698.icons.notifyMe;
+        } else if (buttonText.type === "item added") {
+            icon = CX1698.icons.checkmark;
         } else {
             icon = CX1698.icons.a2b;
         }
@@ -410,7 +427,7 @@ const CX1698 = {
             stickyBtn.insertBefore(mobileProductDetailsElem, stickyBtn.firstElementChild);
             
             const buttonIcon = CX1698.setMobileButtonIcon(iconContainer);
-            stickyBtn.querySelector('button').insertBefore(buttonIcon, stickyBtn.querySelector('button').firstElementChild);
+            stickyBtn.querySelector('button').appendChild(buttonIcon);
 
             if (!CX1698.hasShownMobileButtonAnimation) {
                 CX1698.handleButtonAnimation();
