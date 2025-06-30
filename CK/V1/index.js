@@ -226,17 +226,37 @@ const CX1698 = {
 
         return btn;
     },
-    setButtonText: () => {
+    checkButtonText: () => {
         const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+        const buttonTextLowerCase = buttonText.toLowerCase();
 
-        if (buttonText === 'Item Added') {
+        if (buttonTextLowerCase === 'item added' || buttonTextLowerCase === 'item toegevoegd' || buttonTextLowerCase === 'artikel hinzugefügt' || buttonTextLowerCase === 'article ajouté' || buttonTextLowerCase === 'articolo aggiunto' || buttonTextLowerCase === 'artículo añadido' || buttonTextLowerCase === 'dodano produkt') {
+            return {
+                type: "item added",
+                text: buttonText
+            };
+        } else if (buttonTextLowerCase === 'notify me' || buttonTextLowerCase === 'waarschuw mij' || buttonTextLowerCase === 'benachrichtigen sie mich' || buttonTextLowerCase === "m'informer" || buttonTextLowerCase === 'avvisami' || buttonTextLowerCase === 'notifícame' || buttonTextLowerCase === 'powiadom mnie') {
+            return {
+                type: "notify me",
+                text: buttonText
+            };
+        }
+        return {
+            type: "a2b",
+            text: buttonText
+        }
+    },
+    setButtonText: () => {
+        const buttonText = CX1698.checkButtonText();
+
+        if (buttonText.type === 'item added') {
             document.querySelector('.sticky-btn-container button').classList.add('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = CX1698.icons.checkmark;
         } else {
             document.querySelector('.sticky-btn-container button').classList.remove('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
         }
-        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText;
+        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText.text;
     },
     throttleScroll: (cb, delay = 100) => {
         let shouldWait = false;

@@ -220,17 +220,36 @@ const CX1698 = {
 
         return btn;
     },
-    setButtonText: () => {
-        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent;
+    checkButtonText: () => {
+        const buttonText = document.querySelector('[data-testid*="pdpActionButton"]').textContent.toLowerCase();
 
-        if (buttonText === 'Item Added') {
+        if (buttonText === 'item added' || buttonText === 'item toegevoegd' || buttonText === 'artikel hinzugefügt' || buttonText === 'article ajouté' || buttonText === 'articolo aggiunto' || buttonText === 'artículo añadido' || buttonText === 'dodano produkt') {
+            return {
+                type: "item added",
+                text: buttonText
+            };
+        } else if (buttonText === 'notify me' || buttonText === 'waarschuw mij' || buttonText === 'benachrichtigen sie mich' || buttonText === "m'informer" || buttonText === 'avvisami' || buttonText === 'notifícame' || buttonText === 'powiadom mnie') {
+            return {
+                type: "notify me",
+                text: buttonText
+            };
+        }
+        return {
+            type: "a2b",
+            text: buttonText
+        }
+    },
+    setButtonText: () => {
+        const buttonText = CX1698.checkButtonText();
+        
+        if (buttonText.type === 'item added') {
             document.querySelector('.sticky-btn-container button').classList.add('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = CX1698.icons.checkmark;
         } else {
             document.querySelector('.sticky-btn-container button').classList.remove('itemAdded');
             document.querySelector('.sticky-btn-container .sticky-btn-icon').innerHTML = '';
         }
-        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText;
+        document.querySelector('.sticky-btn-container .sticky-btn-text').textContent = buttonText.text;
     },
     throttleScroll: (cb, delay = 100) => {
         let shouldWait = false;
@@ -261,18 +280,15 @@ const CX1698 = {
         let isShowingButton = false;
 
         window.addEventListener("scroll", CX1698.throttleScroll(() => { 
-            console.log("handling scroll");
             let st = window.pageYOffset || document.documentElement.scrollTop;
             let staticButtonPos = document.querySelector('[data-testid*="pdpActionButton"]').getBoundingClientRect().top;
 
             if (st > lastScrollTop && staticButtonPos < 0 && !isShowingButton) {
                 CX1698.setButtonText();
-                console.log("show button");
                 document.querySelector('.sticky-btn-container').classList.add('visible');
                 document.querySelector('header').style.opacity = 0;
                 isShowingButton = true;
             } else if (st < lastScrollTop && isShowingButton) {
-                console.log("hide button");
                 isShowingButton = false;
                 document.querySelector('.sticky-btn-container').classList.remove('visible');
                 document.querySelector('header').style.opacity = 1;
@@ -286,8 +302,6 @@ const CX1698 = {
         const callback = (mutationList, observer) => {
             for (const mutation of mutationList) {
             if (mutation.type === "characterData" || mutation.type === "attributes") {
-                console.log("MUTATION!", mutation)
-                // update button text ...
                 CX1698.setButtonText();
             }
             }
